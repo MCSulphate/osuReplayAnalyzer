@@ -92,7 +92,13 @@ namespace OsuDbAPI
         private Beatmap readBeatmap()
         {
             int n;
-            this.fileReader.ReadInt32();
+
+            // only need to read this int if the version is < 20191107.
+            // see https://github.com/ppy/osu-wiki/commit/7ce3b8988d9945fe5867029a65750b40d66a3820
+            if (this.Version < 20191107)
+            {
+                this.fileReader.ReadInt32();
+            }
             Beatmap beatmap = new Beatmap();
             beatmap.ArtistName = this.readNullableString();
             beatmap.ArtistNameUnicode = this.readNullableString();
